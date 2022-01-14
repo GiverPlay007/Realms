@@ -1,10 +1,12 @@
 package net.focaenterprises.realms.entity
 
+import net.focaenterprises.realms.game.Realms
 import net.focaenterprises.realms.game.RealmsInfo.TILE_SIZE
 import java.awt.Graphics
 import java.awt.image.BufferedImage
 
 abstract class Entity(
+  val realms: Realms,
   var x: Double,
   var y: Double,
   var width: Int = TILE_SIZE,
