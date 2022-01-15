@@ -68,7 +68,7 @@ class Realms : Runnable {
     graphics.color = Color(0x0)
     graphics.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 
-     entities.forEach { it.render(graphics) }
+    entities.forEach { it.render(graphics) }
 
     graphics.dispose()
     bufferStrategy.show()
