@@ -7,14 +7,14 @@ class Grid(private val width: Int, private val height: Int) {
 
   operator fun get(x: Int, y: Int): GridObject? {
     checkBounds(x, y)
-    return cast(x, y)
+    return getElement(x, y)
   }
 
   fun insert(x: Int, y: Int, element: GridObject): GridObject? {
     checkBounds(x, y)
     checkCanPlace(x, y, element);
 
-    val previous = cast(x, y)
+    val previous = getElement(x, y)
     elements[toIndex(x, y)] = element
 
     return previous
@@ -25,7 +25,7 @@ class Grid(private val width: Int, private val height: Int) {
       for(yy in y..y + element.height) {
         when {
           checkOutOfBoundsSilent(xx, yy) -> return false
-          cast(xx, yy) != null -> return false
+          getElement(xx, yy) != null -> return false
         }
       }
     }
@@ -33,7 +33,7 @@ class Grid(private val width: Int, private val height: Int) {
     return true
   }
 
-  private fun cast(x: Int, y: Int): GridObject? = elements[toIndex(x, y)]
+  private fun getElement(x: Int, y: Int): GridObject? = elements[toIndex(x, y)]
 
   private fun toIndex(x: Int, y: Int): Int = x + y * width
 
