@@ -1,21 +1,19 @@
 package net.focaenterprises.realms.game
 
 import javax.swing.JFrame
-import net.focaenterprises.realms.entity.Entity
 import net.focaenterprises.realms.entity.TreeEntity
 import net.focaenterprises.realms.game.RealmsInfo.SCREEN_HEIGHT
 import net.focaenterprises.realms.game.RealmsInfo.SCREEN_WIDTH
 import net.focaenterprises.realms.game.RealmsInfo.TITLE
 import net.focaenterprises.realms.graphics.Spritesheet
 import net.focaenterprises.realms.scheduler.Time
+import net.focaenterprises.realms.world.World
 import java.awt.Canvas
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.image.BufferStrategy
 
 class Realms : Runnable {
-  private var entities = ArrayList<Entity>()
-
   private lateinit var canvas: Canvas
   private lateinit var frame: JFrame
   private lateinit var bufferStrategy: BufferStrategy
@@ -24,6 +22,7 @@ class Realms : Runnable {
   private var isRunning = false
 
   lateinit var ambientSprites: Spritesheet
+  lateinit var world: World
 
   private var ticks = 0
   private var tps = 0
@@ -45,8 +44,9 @@ class Realms : Runnable {
     bufferStrategy = canvas.bufferStrategy
 
     ambientSprites = Spritesheet("Ambient.png")
+    world = World()
 
-    entities.add(TreeEntity(this, 10.0, 10.0))
+    world.addEntity(TreeEntity(this, 10.0, 10.0))
   }
 
   fun start() {
@@ -58,8 +58,7 @@ class Realms : Runnable {
   }
 
   private fun update() {
-    entities.forEach(Entity::update)
-    entities.removeIf(Entity::removed)
+    world.update()
   }
 
   private fun draw() {
@@ -68,7 +67,7 @@ class Realms : Runnable {
     graphics.color = Color(0x0)
     graphics.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 
-    entities.forEach { it.render(graphics) }
+    world.render(graphics)
 
     graphics.dispose()
     bufferStrategy.show()
